@@ -54,64 +54,71 @@ Um sistema web em PHP para cadastro, análise e gerenciamento de imóveis para i
 
 ```bash
 cd c:\xampp\htdocs
-git clone https://github.com/seu-usuario/administracao-imoveis.git Adm
+git clone https://github.com/LeandroIgeski/CarteiraDigitalImoveis.git Adm
 cd Adm
 ```
 
-### 2. Configure o banco de dados
-
-Crie um banco de dados MySQL chamado `administracao`:
-
-```sql
-CREATE DATABASE administracao;
-USE administracao;
-
--- Tabela de usuários
-CREATE TABLE usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    login VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(100) NOT NULL,
-    nome VARCHAR(150),
-    email VARCHAR(150),
-    cpf VARCHAR(20)
-);
-
--- Tabela de imóveis
-CREATE TABLE imoveis (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    valor_imovel DECIMAL(12, 2),
-    valor_aluguel DECIMAL(12, 2),
-    localizacao VARCHAR(255),
-    iptu DECIMAL(10, 2),
-    custos_mensais DECIMAL(10, 2),
-    lucro_mensal DECIMAL(10, 2),
-    lucro_anual DECIMAL(10, 2),
-    payback DECIMAL(10, 2),
-    analise LONGTEXT,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
-```
-
-### 3. Adicione suas chaves de API
-
-Edite `config/conexao.php` se necessário (ou adicione um arquivo `.env`):
-
-```php
-// Já está em view/imoveis/cadastrarImoveis.php (função gerarAnaliseIA)
-$api_key_hugging_face = 'sua_chave_aqui';
-$api_key_geoapify = 'sua_chave_aqui';
-```
-
-### 4. Inicie o XAMPP
+### 2. Inicie o XAMPP
 
 - Abra o painel de controle do XAMPP
 - Inicie Apache e MySQL
-- Acesse: `http://localhost/Adm`
 
-### 5. Crie um usuário de teste
+### 3. Inicialize o banco de dados automaticamente
 
-Clique em "Não possui conta? Cadastre-se agora" e registre um novo usuário.
+Acesse no navegador:
+
+```
+http://localhost/Adm/setup.php
+```
+
+O script vai:
+- ✅ Criar o banco `administracao`
+- ✅ Criar tabelas `usuarios` e `imoveis`
+- ✅ Criar usuário de teste (login: `teste`, senha: `teste123`)
+- ✅ Configurar índices de performance
+
+**Ou manualmente via phpMyAdmin:**
+
+1. Abra `http://localhost/phpmyadmin`
+2. Clique em SQL
+3. Cole o conteúdo de `database.sql`
+4. Clique em Executar
+
+### 4. Configure suas chaves de API
+
+No arquivo `view/imoveis/cadastrarImoveis.php`, linha 7, a chave agora usa variável de ambiente:
+
+```php
+$api_key = getenv('HUGGINGFACE_API_KEY') ?: 'sua_chave_aqui';
+```
+
+**Defina a variável de ambiente:**
+
+Windows (PowerShell):
+```powershell
+[Environment]::SetEnvironmentVariable('HUGGINGFACE_API_KEY', 'sua_chave_aqui', 'User')
+```
+
+Linux/Mac:
+```bash
+export HUGGINGFACE_API_KEY='sua_chave_aqui'
+```
+
+Ou crie um arquivo `.env` na raiz do projeto:
+```
+HUGGINGFACE_API_KEY=sua_chave_aqui
+GEOAPIFY_API_KEY=sua_chave_aqui
+```
+
+### 5. Acesse o sistema
+
+```
+http://localhost/Adm
+```
+
+Faça login com:
+- **Login:** teste
+- **Senha:** teste123
 
 ## 📁 Estrutura do Projeto
 
