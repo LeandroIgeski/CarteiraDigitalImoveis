@@ -1,0 +1,37 @@
+# Pasta de sessões (não deve ser versionada)
+/sessions/*
+!sessions/.gitkeep
+
+# Arquivos de log e debug
+*.log
+debug_*.log
+login_*.log
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+
+# Cache do PHP
+.phpunit.result.cache
+.phplint-cache
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dependências (se usar Composer)
+/vendor/
+composer.lock
+
+# Arquivos temporários do XAMPP
+/tmp/*
+!tmp/.gitkeep
+
+# Credenciais sensíveis (se houver)
+config/credentials.php
+config/secrets.php
